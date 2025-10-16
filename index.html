@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zyara - eCommerce App</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Custom CSS */
+    .active {
+      font-weight: bold;
+      color: #2532eb;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <!-- HEADER -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-xl font-bold">Zyara</div>
+      <nav class="space-x-4 hidden md:flex">
+        <a href="index.html" class="hover:text-blue-600 active">Home</a>
+        <a href="shop.html" class="hover:text-blue-600">Shop</a>
+        <a href="profile1.html" class="hover:text-blue-600">Profile</a>
+        <nav class="menu">
+          <a href="account.html">Account</a>
+          
+      </nav>
+        <a href="#contact" class="hover:text-blue-600">Contact</a>
+      </nav>
+      <a href="cart.html" class="relative" aria-label="View Cart">
+        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart Icon" class="w-6 h-6">
+        <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1 rounded-full" id="cart-count">0</span>
+      </a>  
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="bg-blue-600 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-4xl font-bold mb-4">Welcome to zyara</h1>
+      <p class="text-lg mb-6">Your one-stop shop for all your needs</p>
+      <a href="#shop" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition">Shop Now</a>
+ 
+
+
+  <!-- FEATURED PRODUCTS -->
+  <section id="shop" class="max-w-7xl mx-auto py-10 px-4">
+    <h2 class="text-2xl font-bold mb-6">Featured Products</h2>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="product-grid">
+    </div>
+  </section>
+
+  <!-- CART SECTION -->
+  <section id="cart" class="max-w-4xl mx-auto py-10 px-4 hidden">
+    <h2 class="text-2xl font-bold mb-6">Shopping Cart</h2>
+    <div id="cart-items"></div>
+    <div class="mt-4 text-right">
+      <p class="text-xl font-bold">Total: ₹<span id="cart-total">0.00</span></p>
+      <button id="checkout-btn" class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+        Proceed to checkout
+      </button>
+    </div>
+  </section>
+
+  <!-- PAYMENT SECTION -->
+  <section id="payment-section" class="max-w-4xl mx-auto py-10 px-4 hidden">
+    <h2 class="text-2xl font-bold mb-6">Payment</h2>
+    <p>Complete your payment to place the order.</p>
+    <button onclick="placeOrder()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      Place Order
+    </button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-white shadow-inner mt-10 py-6">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+      <p class="text-sm">&copy; 2025 ShopEase. All rights reserved.</p>
+      <div class="space-x-4 mt-2 md:mt-0">
+        <a href="#" class="hover:text-blue-600">Facebook</a>
+        <a href="#" class="hover:text-blue-600">Twitter</a>
+        <a href="#" class="hover:text-blue-600">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const products = [
+      { id: 1, name: "Wireless Headphones", price: 1000.00, image: "jbl.jpeg" },
+      { id: 2, name: "Smart Watch", price: 1500.00, image: "smart.jpeg" },
+      { id: 3, name: "Bluetooth Speaker", price: 2000.00, image: "bluethooth p.jpeg" },
+      { id: 4, name: "Laptop Stand", price: 500.00, image: "laptop.jpg" },
+      { id: 5, name: "Smartphone", price: 125000.00, image: "samsung s22.jpeg" },
+      { id: 6, name: "Computer", price: 50000.00, image: "computer.jpg" },
+      { id: 7, name: "Television", price: 25000.00, image: "television.jpg" },
+      { id: 8, name: "Oven", price: 5000.00, image: "oven.jpg" },
+      { id:9, name: "lipstick", price: 500.00, image: "lipstick.jpg" },
+      { id:10, name: "Perfume", price: 1000.00, image: "perfume.jpg" },
+      { id:11, name: "Shampoo", price: 300.00, image: "shampoo.jpg" },
+      { id:12, name: "Conditioner", price: 400.00, image: "conditioner.jpg" },
+      { id:13, name: "Facewash", price: 200.00, image: "facewash.jpg" },
+      { id:14, name: "Moisturizer", price: 600.00, image: "moisturizer.jpg" },
+      { id:15, name: "Sunscreen", price: 800.00, image: "sunscreen.jpg" },
+      { id:16, name: "Body Lotion", price: 700.00, image: "bodylotion.jpg"}
+
+    ];
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const productGrid = document.getElementById("product-grid");
+    const cartItems = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
+
+    function renderProducts() {
+      productGrid.innerHTML = "";
+      products.forEach(p => {
+        productGrid.innerHTML += `
+          <div class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition">
+            <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover mb-4 rounded">
+            <h3 class="text-lg font-semibold">${p.name}</h3>
+            <p class="text-blue-600 font-bold">₹${new Intl.NumberFormat('en-IN').format(p.price)}</p>
+            <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-id="${p.id}">Add to Cart</button>
+          </div>`;
+      });
+
+      document.querySelectorAll('[data-id]').forEach(btn => {
+        btn.addEventListener('click', () => addToCart(Number(btn.dataset.id)));
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      const item = cart.find(c => c.id === id);
+      if (item) {
+        item.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCart();
+    }
+
+    function updateCart() {
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        cartItems.innerHTML += `
+          <div class="flex justify-between items-center mb-2">
+            <div>${item.name} (x${item.qty})</div>
+            <div>
+              ₹${new Intl.NumberFormat('en-IN').format(item.price * item.qty)}
+              <button class="text-red-500 ml-2" data-remove-id="${item.id}">x</button>
+            </div>
+          </div>`;
+      });
+      cartTotal.innerText = new Intl.NumberFormat('en-IN').format(total);
+      cartCount.innerText = cart.reduce((sum, i) => sum + i.qty, 0);
+
+      document.querySelectorAll('[data-remove-id]').forEach(btn => {
+        btn.addEventListener('click', () => removeFromCart(Number(btn.dataset.removeId)));
+      });
+    }
+
+    function removeFromCart(id) {
+      const index = cart.findIndex(i => i.id === id);
+      if (index > -1) cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCart();
+    }
+
+    document.getElementById("checkout-btn").addEventListener("click", () => {
+      document.getElementById("payment-section").classList.remove("hidden");
+    });
+
+    function placeOrder() {
+      alert("Order placed successfully!");
+      localStorage.removeItem("cart");
+      location.reload();
+    }
+
+    renderProducts();
+    updateCart();
+  </script>
+</body>
+</html>

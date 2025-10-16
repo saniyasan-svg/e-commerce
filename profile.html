@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Login/Signup Popup</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            width: 400px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .form-container button:hover {
+            background: #0056b3;
+        }
+
+        .toggle-link {
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Checkout Button -->
+    <button onclick="openModal()">Checkout</button>
+
+    <!-- Modal Popup -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="form-container active">
+                <h2>Login</h2>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button>Login</button>
+                <p>Don't have an account? <span class="toggle-link" onclick="switchToSignup()">Create one</span></p>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupForm" class="form-container">
+                <h2>Sign Up</h2>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button>Sign Up</button>
+                <p>Already have an account? <span class="toggle-link" onclick="switchToLogin()">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle modal and form toggle
+        const modal = document.getElementById('authModal');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+
+        function openModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function switchToSignup() {
+            loginForm.classList.remove('active');
+            signupForm.classList.add('active');
+        }
+
+        function switchToLogin() {
+            signupForm.classList.remove('active');
+            loginForm.classList.add('active');
+        }
+    </script>
+</body>
+</html>

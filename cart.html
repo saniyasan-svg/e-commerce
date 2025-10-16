@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyara - My Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f8ff;
+        }
+        header {
+            background: #007BFF;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        header .menu {
+            display: flex;
+            gap: 15px;
+        }
+        header .menu a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+        }
+        header .menu a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 24px;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+        .empty-cart {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+        }
+        .empty-cart img {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        .empty-cart h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .empty-cart p {
+            font-size: 16px;
+            color: #999;
+        }
+        .cart-items {
+            margin-top: 20px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .cart-item-details {
+            flex: 1;
+            margin-left: 15px;
+        }
+        .cart-item-details h3 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+        .cart-item-details p {
+            font-size: 14px;
+            color: #555;
+            margin: 5px 0 0;
+        }
+        .cart-item button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cart-item button:hover {
+            background: #cc0000;
+        }
+        .checkout-container {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .checkout-container button {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .checkout-container button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Zyara</a>
+        <nav class="menu">
+            <a href="profile.html">Profile</a>
+            <a href="wishlist.html">Wishlist</a>
+            <a href="cart.html" class="active">Cart</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>My Cart</h2>
+        <div id="emptyCart" class="empty-cart">
+            <img src="https://via.placeholder.com/300" alt="Empty Cart">
+            <h3>Your cart is empty!</h3>
+            <p>Add items to your cart to view them here.</p>
+        </div>
+        <div id="cartItems" class="cart-items" style="display: none;"></div>
+        <div id="checkoutContainer" class="checkout-container" style="display: none;">
+            <button onclick="goToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+    <script>
+        function displayCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItems = document.getElementById("cartItems");
+            const emptyCart = document.getElementById("emptyCart");
+            const checkoutContainer = document.getElementById("checkoutContainer");
+
+            if (cart.length > 0) {
+                emptyCart.style.display = "none";
+                cartItems.style.display = "block";
+                checkoutContainer.style.display = "block";
+
+                cartItems.innerHTML = ''; // Clear existing items
+                cart.forEach(item => {
+                    const cartItem = document.createElement("div");
+                    cartItem.classList.add("cart-item");
+
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-details">
+                            <h3>${item.name}</h3>
+                            <p>Price: ₹${item.price}</p>
+                            <p>Quantity: ${item.qty}</p>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})">Remove</button>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+            } else {
+                emptyCart.style.display = "block";
+                cartItems.style.display = "none";
+                checkoutContainer.style.display = "none";
+            }
+        }
+
+        function removeFromCart(id) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const updatedCart = cart.filter(item => item.id !== id);
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+            displayCart();
+        }
+
+        function goToCheckout() {
+            window.location.href = "checkout.html";
+        }
+
+        displayCart();
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            padding: 20px;
+        }
+        .login-form {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="password"], input[type="tel"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #174bb8;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">ShopEase</div>
+            <div class="icons">
+                <a href="login.html" class="icon">Login</a>
+                <a href="cart.html" class="icon">Cart</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="login-form">
+        <form id="loginForm">
+            <h2>Login or Signup</h2>
+            <label for="mobile">Enter Mobile Number:</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="Enter mobile number" required pattern="[0-9]{10}" oninput="checkMobileInput()">
+            <button type="button" id="continueBtn" class="hidden" onclick="continueLogin()">Continue</button>
+        </form>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="policies.html">Policies</a>
+        </div>
+        <div class="social-media">
+            <a href="https://facebook.com" class="icon">Facebook</a>
+            <a href="https://twitter.com" class="icon">Twitter</a>
+            <a href="https://instagram.com" class="icon">Instagram</a>
+        </div>
+    </footer>
+
+    <script>
+        // Function to check mobile input and show "Continue" button
+        function checkMobileInput() {
+            const mobileInput = document.getElementById("mobile").value.trim();
+            const continueBtn = document.getElementById("continueBtn");
+
+            // Show "Continue" button only if mobile number is 10 digits
+            if (mobileInput.length === 10 && /^[0-9]{10}$/.test(mobileInput)) {
+                continueBtn.classList.remove("hidden");
+            } else {
+                continueBtn.classList.add("hidden");
+            }
+        }
+
+        // Function to simulate login or signup process and navigate to profile page
+        function continueLogin() {
+            const mobileInput = document.getElementById("mobile").value.trim();
+            alert(`Mobile number ${mobileInput} entered. Proceeding to profile page...`);
+            // Redirect to profile page
+            window.location.href = "profile.html";
+        }
+    </script>
+</body>
+</html>
